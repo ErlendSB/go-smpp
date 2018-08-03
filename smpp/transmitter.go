@@ -15,10 +15,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fiorix/go-smpp/smpp/pdu"
-	"github.com/fiorix/go-smpp/smpp/pdu/pdufield"
-	"github.com/fiorix/go-smpp/smpp/pdu/pdutext"
-	"github.com/fiorix/go-smpp/smpp/pdu/pdutlv"
+	"github.com/ErlendSB/go-smpp/smpp/pdu"
+	"github.com/ErlendSB/go-smpp/smpp/pdu/pdufield"
+	"github.com/ErlendSB/go-smpp/smpp/pdu/pdutext"
+	"github.com/ErlendSB/go-smpp/smpp/pdu/pdutlv"
 )
 
 // ErrMaxWindowSize is returned when an operation (such as Submit) violates
@@ -182,7 +182,7 @@ type ShortMessage struct {
 	Register pdufield.DeliverySetting
 
 	// Other fields, normally optional.
-	TLVFields			 pdutlv.Fields
+	TLVFields            pdutlv.Fields
 	ServiceType          string
 	SourceAddrTON        uint8
 	SourceAddrNPI        uint8
@@ -331,6 +331,8 @@ func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 	maxLen := 133 // 140-7 (UDH with 2 byte reference number)
 	if sm.Text.Type() == pdutext.UCS2Type {
 		maxLen = 132 // to avoid a character being split between payloads
+	} else if sm.Text.Type() == pdutext.Latin1Type {
+		maxLen = 152 // to avoid a character being split between payloads
 	}
 	rawMsg := sm.Text.Encode()
 	countParts := int((len(rawMsg)-1)/maxLen) + 1
