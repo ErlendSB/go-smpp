@@ -332,7 +332,7 @@ func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 	if sm.Text.Type() == pdutext.UCS2Type {
 		maxLen = 132 // to avoid a character being split between payloads
 	} else if sm.Text.Type() == pdutext.Latin1Type {
-		maxLen = 152 // to avoid a character being split between payloads
+		maxLen = 153 // to avoid a character being split between payloads
 	}
 	rawMsg := sm.Text.Encode()
 	countParts := int((len(rawMsg)-1)/maxLen) + 1
@@ -355,8 +355,10 @@ func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 		f.Set(pdufield.DestinationAddr, sm.Dst)
 		if i != countParts-1 {
 			f.Set(pdufield.ShortMessage, pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:(i+1)*maxLen]...)))
+			fmt.Println("1:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:(i+1)*maxLen]...)))
 		} else {
 			f.Set(pdufield.ShortMessage, pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:]...)))
+			fmt.Println("2:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:]...)))
 		}
 		f.Set(pdufield.RegisteredDelivery, uint8(sm.Register))
 		if sm.Validity != time.Duration(0) {
