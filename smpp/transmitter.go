@@ -332,7 +332,7 @@ func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 	if sm.Text.Type() == pdutext.UCS2Type {
 		maxLen = 132 // to avoid a character being split between payloads
 	} else if sm.Text.Type() == pdutext.Latin1Type {
-		maxLen = 153 // to avoid a character being split between payloads
+		maxLen = 152 // to avoid a character being split between payloads
 	}
 	rawMsg := sm.Text.Encode()
 	countParts := int((len(rawMsg)-1)/maxLen) + 1
