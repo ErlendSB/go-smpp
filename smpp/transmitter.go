@@ -355,10 +355,10 @@ func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 		f.Set(pdufield.DestinationAddr, sm.Dst)
 		if i != countParts-1 {
 			f.Set(pdufield.ShortMessage, pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:(i+1)*maxLen]...)))
-			fmt.Println("1:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:(i+1)*maxLen]...)))
+			//fmt.Println("1:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:(i+1)*maxLen]...)))
 		} else {
 			f.Set(pdufield.ShortMessage, pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:]...)))
-			fmt.Println("2:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:]...)))
+			//fmt.Println("2:", pdutext.Raw(append(UDHHeader, rawMsg[i*maxLen:]...)))
 		}
 		f.Set(pdufield.RegisteredDelivery, uint8(sm.Register))
 		if sm.Validity != time.Duration(0) {
