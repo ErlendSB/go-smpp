@@ -330,7 +330,7 @@ func (t *Transmitter) Submit(sm *ShortMessage) (*ShortMessage, error) {
 func (t *Transmitter) SubmitLongMsg(sm *ShortMessage) (*ShortMessage, error) {
 	maxLen := 133 // 140-7 (UDH with 2 byte reference number)
 	if sm.Text.Type() == pdutext.UCS2Type {
-		maxLen = 132 // to avoid a character being split between payloads
+		maxLen = 66 // to avoid a character being split between payloads
 	} else if sm.Text.Type() == pdutext.Latin1Type {
 		maxLen = 152 // to avoid a character being split between payloads
 	}
